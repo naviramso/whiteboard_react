@@ -1,0 +1,31 @@
+.menu-container {
+    position: fixed;
+    display: flex;
+    top: calc(50% - 150px);
+    left: 2%;
+    width: 50px;
+    /* height: 300px; */
+    border-radius: 24px;
+    background-color: white;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 5px 0;
+
+}
+
+.button-menu {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    margin: 0 auto;
+    background: none;
+    border: none;
+    box-shadow: 1px 1px gray;
+    margin: 5px auto;
+}
+
+.button-menu:hover {
+    background-color: gray;
+    cursor: pointer;
+
+}

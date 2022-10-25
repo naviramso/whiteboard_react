@@ -1,0 +1,7 @@
+.canvas {
+    width: 80%;
+    height: 600px;
+    background-color: rgb(255, 255, 255);
+    justify-content: center;
+    margin-top: 20px;
+}
