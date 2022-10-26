@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export function Menu(){
     return <div className="menu-container">
-        <Button icon="pen"/>
+        <Button icon="pen" dropdown="dropdown"/>
         <Button icon="eraser"/>
         <Button icon="minus"/>
         <Button icon="image"/>
@@ -16,8 +16,19 @@ export function Menu(){
 
 function Button(props){
     return <>
-        <button className='button-menu'>
+        <button className={'button-menu ' + props.color}>
         <FontAwesomeIcon icon={props.icon} size="xl"/>
         </button>
     </>
+}
+
+function Dropdown(props){
+    return <div className='dropdown-content'>
+        <Button color = ""/>
+        <Button color = ""/>
+        <Button color = ""/>
+        <Button color = ""/>
+        <Button color = ""/>
+        <Button color = ""/>
+        </div>
 }
