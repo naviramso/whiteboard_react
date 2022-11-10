@@ -1,8 +1,6 @@
 import React from "react";
+import { App } from "./app";
 import ReactDOM from "react-dom/client";
-import { Menu } from "./menu";
-import { Whiteboard } from "./whiteboard";
-import "./styles.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faSave,
@@ -20,10 +18,7 @@ library.add(faSave, faEraser, faTrash, faPen, faImage, faMinus, faShapes, faT);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const element = (
-  <div className="container">
-    <Menu></Menu>
-    <Whiteboard></Whiteboard>
-  </div>
+  <App></App>
 );
 
 root.render(element);

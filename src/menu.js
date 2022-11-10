@@ -1,7 +1,10 @@
 import "./menu.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useContext } from "react";
+import { context } from "./app";
 
 export function Menu() {
+  
   return (
     <div className="menu-container">
       <Button icon="pen" dropdown="dropdown" />
@@ -17,9 +20,12 @@ export function Menu() {
 }
 
 function Button(props) {
+  const [pencil,setPencil]=useContext(context);
   return (
     <>
-      <button className={"button-menu " + props.color}>
+      <button className={"button-menu " + props.color} onClick={()=>{
+        setPencil(true);
+      }}>
         <FontAwesomeIcon icon={props.icon} size="xl" />
       </button>
     </>
@@ -37,4 +43,7 @@ function Dropdown(props) {
       <Button color="" />
     </div>
   );
-}
+};
+
+
+
