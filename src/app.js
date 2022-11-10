@@ -1,5 +1,5 @@
 import { Whiteboard } from "./whiteboard";
-import { Menu } from "./menu";
+import { Menu, menuContext } from "./menu";
 import "./styles.css";
 import { createContext, useState } from "react";
 

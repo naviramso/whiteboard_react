@@ -1,12 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, createContext } from "react";
 import { context } from "./app";
 import "./whiteboard.css";
 
 let canvasize;
 let canvasCtx;
+
 export function Whiteboard() {
   const [pencil] = useContext(context);
   const [bandera, setbandera] = useState(false);
+
   useEffect(() => {
     const canvas = document.getElementById("micanvas");
     canvasCtx = canvas.getContext("2d");
@@ -14,7 +16,8 @@ export function Whiteboard() {
   });
 
   return (
-    <div className="canvas">
+   
+      <div className="canvas">
       <canvas
         id="micanvas"
         width={1920}
@@ -48,5 +51,6 @@ export function Whiteboard() {
         }}
       ></canvas>
     </div>
+   
   );
 }

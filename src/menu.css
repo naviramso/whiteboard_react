@@ -28,17 +28,19 @@
 
 .dropdown {
     background-color: #21527afa;
+    display:block;
+    position: relative;
 }
 
 .dropdown-content {
-    position:absolute;
+    position:relative;
     left: 50px;
     background-color: #f9f9f9;
     min-width: 200px;
     min-height: 50px;
     box-shadow: 0px 8px 16px 0px black;
     border-radius: 24px;
-    
+    display: 
 }
 
 .dropdown-content .button-menu{
