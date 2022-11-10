@@ -5,7 +5,7 @@ import { createContext, useState } from "react";
 
 export const context=createContext();
 export function App(){
-    const [pencil,setPencil]=useState(false);
+    const [pencil,setPencil]=useState(true);
     
     return (
         <context.Provider value={[pencil,setPencil]}>
