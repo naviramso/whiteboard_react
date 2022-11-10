@@ -5,7 +5,8 @@ import "./whiteboard.css";
 let canvasize ;
 let canvasCtx;
 export function Whiteboard() {
-  const [pencil]=useContext(context);
+  const [pencil,esta,color]=useContext(context);
+  console.log(useContext(context));
   const [bandera,setbandera]=useState(false);
   useEffect(()=>{
     const canvas= document.getElementById("micanvas");
@@ -21,17 +22,18 @@ export function Whiteboard() {
         if(pencil){
           setbandera(true);
           canvasCtx.beginPath();
+          canvasCtx.strokeStyle=color;
+          canvasCtx.lineWidth = 10;
           canvasCtx.moveTo(event.clientX -canvasize.left,event.clientY - canvasize.top);
         }
       }} onMouseMove={(e)=>{
-        if(bandera)
+        if(bandera){
         canvasCtx.lineTo(e.clientX -canvasize.left,e.clientY - canvasize.top);
         canvasCtx.stroke();
-      }} onMouseUp={(e)=>{
+      }
+      }} onMouseUp={()=>{
         setbandera(false);
-        canvasCtx.lineTo(e.clientX -canvasize.left,e.clientY - canvasize.top);
-        canvasCtx.stroke();
-        canvasCtx.closePath();
+
       }} ></canvas>
     </div>
   );

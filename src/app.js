@@ -6,9 +6,9 @@ import { createContext, useState } from "react";
 export const context=createContext();
 export function App(){
     const [pencil,setPencil]=useState(false);
-    
+    const [color,setColor] =useState("red");
     return (
-        <context.Provider value={[pencil,setPencil]}>
+        <context.Provider value={[pencil,setPencil,color]}>
         <div className="container">
             <Menu></Menu>
             <Whiteboard></Whiteboard>
