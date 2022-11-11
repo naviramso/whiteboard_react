@@ -34,6 +34,7 @@ export function Menu() {
         />
         <Button
           icon="eraser"
+          eraser = {menuEraser}
           onclick={() => {
             setColor("white")
             setMenuColor(false);
@@ -87,6 +88,7 @@ export function Menu() {
         />
         <Button icon="save" />
         <Button icon="trash" 
+          trash = {menuTrask}
           onclick={() => {
             setMenuThickness(false);
             setMenuColor(false);
@@ -107,7 +109,7 @@ function Button(props) {
     <>
       <button
         className={
-          props.color || props.thickness || props.text || props.shapes
+          props.color || props.thickness || props.text || props.shapes || props.eraser || props.trash
             ? " dropdown button-menu"
             : " button-menu"
         }
