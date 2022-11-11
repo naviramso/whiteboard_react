@@ -97,29 +97,28 @@ function Button(props) {
 }
 
 function DropdownColor() {
+  const [,,,setColor] = useContext(context);
   const [, setMenuColor] = useContext(menuContext);
+  console.log({setColor});
   return (
     <div className="dropdown-content">
       <h4>Seleccionar color</h4>
-      <ButtonColor
-        color="black"
-        fun={() => {
-          setMenuColor(false);
-        }}
-      />
-      <ButtonColor color="red" />
-      <ButtonColor color="yellow" />
-      <ButtonColor color="blue" />
-      <ButtonColor color="green" />
-      <input type={"color"}></input>
+      <ButtonColor color="black" click={()=>{setColor("black")}}/>
+      <ButtonColor color="red" click={()=>{setColor("red")}}/>
+      <ButtonColor color="yellow" click={()=>{setColor("yellow")}} />
+      <ButtonColor color="blue" click={()=>{setColor("blue")}}/>
+      <ButtonColor color="green" click={()=>{setColor("green")}}/>
+      <input type={"color"} onInput={(e)=>{
+        setColor(e.target.value);
+      }}></input>
     </div>
   );
 }
 
-function ButtonColor({ color, fun }) {
+function ButtonColor({ color,click }) {
   return (
     <>
-      <button className={"button-menu " + color} onClick={fun}></button>
+      <button className={"button-menu " + color} onClick={click} ></button>
     </>
   );
 }
