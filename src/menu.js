@@ -89,10 +89,10 @@ function Button(props) {
         <FontAwesomeIcon icon={props.icon} size="xl" />
       </button>
       <div className="dropdown">
-      {props.color && props.dropdown}
-      {props.text && props.dropdown}
-      {props.thickness && props.dropdown}
-      {props.shapes && props.dropdown}
+        {props.color && props.dropdown}
+        {props.text && props.dropdown}
+        {props.thickness && props.dropdown}
+        {props.shapes && props.dropdown}
       </div>
     </>
   );
@@ -141,7 +141,9 @@ function DropdownThickness(props) {
             marks
             min={1}
             max={10}
-            onChange={(newValue) => setThicknessValue(newValue)}
+            onChange={(newValue) => {
+              setThicknessValue(newValue.target.value);
+            }}
             valueLabelDisplay="auto"
           />
         </Box>
@@ -162,17 +164,25 @@ function DropdownShapes(props) {
 }
 
 function DropdownText(props) {
-  const [textValue, setTextValue] = useState("")
-  console.log(textValue)
+  const [textValue, setTextValue] = useState("");
+  console.log(textValue);
   return (
     <div className="dropdown-content">
       <h4>Insertar Texto</h4>
-      <input className={"input-text"} type={"text"} placeholder={"Escriba un texto"} id="text"></input>
-      <button className="button-text" onClick={()=>{
-        const text = document.getElementById("text");
-        setTextValue(text.value);
-      }}>
-      <FontAwesomeIcon icon={"chevron-up"} size="xl" color="white" />
+      <input
+        className={"input-text"}
+        type={"text"}
+        placeholder={"Escriba un texto"}
+        id="text"
+      ></input>
+      <button
+        className="button-text"
+        onClick={() => {
+          const text = document.getElementById("text");
+          setTextValue(text.value);
+        }}
+      >
+        <FontAwesomeIcon icon={"chevron-up"} size="xl" color="white" />
       </button>
     </div>
   );
