@@ -13,11 +13,12 @@ import {
   faT,
   faSquare,
   faTriangleExclamation,
-  faCircle
+  faCircle,
+  faChevronUp
 } from "@fortawesome/free-solid-svg-icons";
 
 
-library.add(faCircle,faTriangleExclamation, faSquare,faSave, faEraser, faTrash, faPen, faImage, faMinus, faShapes, faT);
+library.add(faChevronUp,faCircle,faTriangleExclamation, faSquare,faSave, faEraser, faTrash, faPen, faImage, faMinus, faShapes, faT);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

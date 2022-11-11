@@ -28,23 +28,31 @@
 
 .dropdown {
     background-color: #21527afa;
-    display:block;
-    position: relative;
+    position:relative;
 }
 
 .dropdown-content {
-    position:relative;
-    left: 50px;
+    position: fixed;
+    left: 70px;
     background-color: #f9f9f9;
     min-width: 200px;
-    min-height: 50px;
+    min-height: 70px;
     box-shadow: 0px 8px 16px 0px black;
     border-radius: 24px;
-
+    text-align: center;
+    padding: 10px auto;
+    display:list-item;
+    align-content: center;
+    justify-items: center;
 }
 
+
 .dropdown-content .button-menu{
-    margin: 5px ;
+    margin:  auto 5px  ;
+}
+
+.range {
+    margin: 0 50px;
 }
 
 
@@ -68,3 +76,19 @@
     background-color: blue;
 }
 
+.input-text {
+    
+    margin-left:  10px;
+    border-radius: 10px 0 0 10px;
+    height: 25px;
+    padding-left: 4px;
+}
+
+.button-text {
+    height: 30px;
+    border:none;
+    background-color:#000000;
+    cursor: pointer;
+    border-radius: 0 10px 10px 0;
+    margin-right: 10px;
+}

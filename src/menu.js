@@ -2,6 +2,8 @@ import "./menu.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createContext, useContext, useState } from "react";
 import { context } from "./app";
+import { Slider } from "@mui/material";
+import { Box } from "@mui/system";
 
 const menuContext = createContext();
 
@@ -61,7 +63,7 @@ export function Menu() {
           onclick={() => {
             setMenuThickness(false);
             setMenuColor(false);
-            setMenuText(false)
+            setMenuText(false);
             setMenuShapes(!menuShapes);
           }}
           dropdown={<DropdownShapes />}
@@ -74,8 +76,6 @@ export function Menu() {
 }
 
 function Button(props) {
-  const [, setMenuColor] = useContext(menuContext);
-
   return (
     <>
       <button
@@ -88,10 +88,12 @@ function Button(props) {
       >
         <FontAwesomeIcon icon={props.icon} size="xl" />
       </button>
-      {props.color && props.dropdown}
-      {props.text && props.dropdown}
-      {props.thickness && props.dropdown}
-      {props.shapes && props.dropdown}
+      <div className="dropdown">
+        {props.color && props.dropdown}
+        {props.text && props.dropdown}
+        {props.thickness && props.dropdown}
+        {props.shapes && props.dropdown}
+      </div>
     </>
   );
 }
@@ -124,10 +126,27 @@ function ButtonColor({ color,click }) {
 }
 
 function DropdownThickness(props) {
+  const [thicknessValue, setThicknessValue] = useState(1);
+  console.log(thicknessValue);
   return (
     <div className="dropdown-content">
       <h4> Cambiar ancho</h4>
-      <input type={"range"}></input>
+      <div className="range">
+        <Box sx={{ width: 100 }}>
+          <Slider
+            aria-label="Small steps"
+            defaultValue={1}
+            step={1}
+            marks
+            min={1}
+            max={10}
+            onChange={(newValue) => {
+              setThicknessValue(newValue.target.value);
+            }}
+            valueLabelDisplay="auto"
+          />
+        </Box>
+      </div>
     </div>
   );
 }
@@ -144,11 +163,26 @@ function DropdownShapes(props) {
 }
 
 function DropdownText(props) {
+  const [textValue, setTextValue] = useState("");
+  console.log(textValue);
   return (
     <div className="dropdown-content">
       <h4>Insertar Texto</h4>
-      <input type={"text"} placeholder={"Escriba un texto"}></input>
-      <button>isert</button>
+      <input
+        className={"input-text"}
+        type={"text"}
+        placeholder={"Escriba un texto"}
+        id="text"
+      ></input>
+      <button
+        className="button-text"
+        onClick={() => {
+          const text = document.getElementById("text");
+          setTextValue(text.value);
+        }}
+      >
+        <FontAwesomeIcon icon={"chevron-up"} size="xl" color="white" />
+      </button>
     </div>
   );
 }
