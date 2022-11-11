@@ -29,7 +29,7 @@
 .dropdown {
     background-color: #21527afa;
     display:block;
-    position: relative;
+    
 }
 
 .dropdown-content {
@@ -40,11 +40,22 @@
     min-height: 50px;
     box-shadow: 0px 8px 16px 0px black;
     border-radius: 24px;
-    display: 
+    padding:auto 5px;
+}
+
+.dropdown-content .menu {
+    display:flex;
+    flex: content;
+    align-content: center;
+}
+
+.dropdown-content .menu h3 {
+    flex-direction: row;
+    flex:content;
 }
 
 .dropdown-content .button-menu{
-    margin: 5px ;
+    margin:  auto 5px  ;
 }
 
 

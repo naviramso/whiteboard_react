@@ -2,8 +2,12 @@ import "./menu.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createContext, useContext, useState } from "react";
 import { context } from "./app";
+import { Slider } from "@mui/material";
+import { Box } from "@mui/system";
 
 const menuContext = createContext();
+
+
 
 export function Menu() {
   const [, setPencil] = useContext(context);
@@ -61,7 +65,7 @@ export function Menu() {
           onclick={() => {
             setMenuThickness(false);
             setMenuColor(false);
-            setMenuText(false)
+            setMenuText(false);
             setMenuShapes(!menuShapes);
           }}
           dropdown={<DropdownShapes />}
@@ -74,8 +78,6 @@ export function Menu() {
 }
 
 function Button(props) {
-  const [, setMenuColor] = useContext(menuContext);
-
   return (
     <>
       <button
@@ -125,10 +127,25 @@ function ButtonColor({ color, fun }) {
 }
 
 function DropdownThickness(props) {
+  const [thicknessValue, setThicknessValue] = useState(1);
+  console.log(thicknessValue)
   return (
     <div className="dropdown-content">
-      <h4> Cambiar ancho</h4>
-      <input type={"range"}></input>
+     <div className="menu"> 
+     <h4> Cambiar ancho</h4>
+      <Box sx={{width: 100}}>
+      <Slider
+        aria-label="Small steps"
+        defaultValue={1}
+        step={1}
+        marks
+        min={1}
+        max={10}
+        onChange={(newValue)=> setThicknessValue(newValue)}
+        valueLabelDisplay="auto"
+      />
+      </Box>
+     </div>
     </div>
   );
 }
