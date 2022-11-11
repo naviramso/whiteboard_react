@@ -4,16 +4,18 @@ import { createContext, useContext, useState } from "react";
 import { context } from "./app";
 import { Slider } from "@mui/material";
 import { Box } from "@mui/system";
+import {borrar} from"./whiteboard"
 
 const menuContext = createContext();
 
 export function Menu() {
-  const [, setPencil] = useContext(context);
+  const [, setPencil,,setColor,,,,setfiguras] = useContext(context);
   const [menuColor, setMenuColor] = useState(false);
   const [menuThickness, setMenuThickness] = useState(false);
   const [menuShapes, setMenuShapes] = useState(false);
   const [menuText, setMenuText] = useState(false);
-
+  const [menuEraser,setMenuEraser]= useState(false);
+  const [menuTrask,setMenuTrask] =useState(false);
   return (
     <menuContext.Provider value={[menuColor, setMenuColor]}>
       <div className="menu-container">
@@ -25,13 +27,20 @@ export function Menu() {
             setMenuThickness(false);
             setMenuShapes(false);
             setPencil(true);
+            setMenuEraser(false);
+            setMenuTrask(false);
           }}
           dropdown={<DropdownColor />}
         />
         <Button
           icon="eraser"
           onclick={() => {
-            setPencil(false);
+            setColor("white")
+            setMenuColor(false);
+            setMenuThickness(false);
+            setMenuShapes(false);
+            setMenuTrask(false);
+            setMenuEraser(!menuEraser)
           }}
         />
         <Button
@@ -42,6 +51,8 @@ export function Menu() {
             setMenuColor(false);
             setMenuText(false);
             setMenuShapes(false);
+            setMenuEraser(false);
+            setMenuTrask(false);
           }}
           dropdown={<DropdownThickness />}
         />
@@ -54,6 +65,8 @@ export function Menu() {
             setMenuShapes(false);
             setMenuThickness(false);
             setMenuText(!menuText);
+            setMenuEraser(false)
+            setMenuTrask(false);
           }}
           dropdown={<DropdownText />}
         />
@@ -65,11 +78,25 @@ export function Menu() {
             setMenuColor(false);
             setMenuText(false);
             setMenuShapes(!menuShapes);
+            setfiguras(true);
+            setMenuEraser(false);
+            setMenuTrask(false);
+            
           }}
           dropdown={<DropdownShapes />}
         />
         <Button icon="save" />
-        <Button icon="trash" />
+        <Button icon="trash" 
+          onclick={() => {
+            setMenuThickness(false);
+            setMenuColor(false);
+            setMenuText(false);
+            setMenuShapes(false);
+            setMenuEraser(false);
+            setMenuTrask(!menuTrask);
+            borrar();
+          }}
+        />
       </div>
     </menuContext.Provider>
   );
@@ -126,7 +153,7 @@ function ButtonColor({ color,click }) {
 }
 
 function DropdownThickness(props) {
-  const [thicknessValue, setThicknessValue] = useState(1);
+  const [,,,,thicknessValue, setThicknessValue] = useContext(context);
   console.log(thicknessValue);
   return (
     <div className="dropdown-content">
