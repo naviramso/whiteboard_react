@@ -15,8 +15,9 @@ export function App(){
     return (
         <context.Provider value={[pencil,setPencil,color,setColor,thicknessValue,setThicknessValue,figuras,setfiguras,cuadrado,setCuadrado]}>
         <div className="container">
-            <Menu></Menu>
+            
             <Whiteboard></Whiteboard>
+            <Menu></Menu>
         </div>
         </context.Provider>
     );

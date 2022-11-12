@@ -6,12 +6,10 @@
     
 }
 #micanvas{
-
-    position: fixed;
-    z-index: 1;    
+    position: fixed;   
 }
-#figuras{
- 
+
+#figuras{ 
     position: relative;
     justify-self: center;
     z-index: -1;
