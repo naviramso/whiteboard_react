@@ -4,70 +4,113 @@ import { createContext, useContext, useState } from "react";
 import { context } from "./app";
 import { Slider } from "@mui/material";
 import { Box } from "@mui/system";
-import {borrar} from"./whiteboard"
+import { borrar } from "./whiteboard";
 
 const menuContext = createContext();
 
 export function Menu() {
-  const [, setPencil,,setColor,,,,setfiguras] = useContext(context);
+  const [pencil, setPencil, color, setColor, , , , setfiguras] = useContext(context);
+  const [menuPen, setMenuPen] = useState(false);
+  const [menuEraser, setMenuEraser] = useState(false);
   const [menuColor, setMenuColor] = useState(false);
   const [menuThickness, setMenuThickness] = useState(false);
-  const [menuShapes, setMenuShapes] = useState(false);
+  const [menuImage, setMenuImage] = useState(false);
   const [menuText, setMenuText] = useState(false);
-  const [menuEraser,setMenuEraser]= useState(false);
-  const [menuTrask,setMenuTrask] =useState(false);
+  const [menuSave, setMenuSave] = useState(false);
+  const [menuShapes, setMenuShapes] = useState(false);
+  const [menuTrash, setMenuTrash] = useState(false);
+
+  const selectMenu = (select) => {
+    switch (select) {
+      case 1:
+        setMenuPen(!menuPen);
+        break;
+      case 2:
+        setMenuEraser(!menuEraser);
+        break;
+      case 3:
+        setMenuColor(!menuColor);
+        break;
+      case 4:
+        setMenuThickness(!menuThickness);
+        break;
+      case 5:
+        setMenuImage(!menuImage);
+        break;
+      case 6:
+        setMenuText(!menuText);
+        break;
+      case 7:
+        setMenuShapes(!menuShapes);
+        break;
+      case 8:
+        setMenuSave(!menuSave);
+        break;
+      case 9:
+        setMenuTrash(!menuTrash);
+        break;
+      default:
+        break;
+    }
+  };
+
+  let bb = false
   return (
     <menuContext.Provider value={[menuColor, setMenuColor]}>
       <div className="menu-container">
         <Button
           icon="pen"
-          color={menuColor}
+          pen={menuPen}
           onclick={() => {
-            setMenuColor(!menuColor);
-            setMenuThickness(false);
-            setMenuShapes(false);
-            setPencil(true);
-            setMenuEraser(false);
-            setMenuTrask(false);
+            selectMenu(1);
+            setColor(color)
+            if(!bb){
+              setPencil(true)
+              setColor("black")
+            }
+            if(menuEraser){
+              setMenuEraser(false)
+            }
           }}
-          dropdown={<DropdownColor />}
         />
         <Button
           icon="eraser"
-          eraser = {menuEraser}
+          eraser={menuEraser}
           onclick={() => {
-            setColor("white")
-            setMenuColor(false);
-            setMenuThickness(false);
-            setMenuShapes(false);
-            setMenuTrask(false);
-            setMenuEraser(!menuEraser)
+            bb = true;
+            setColor("white");
+            if(menuPen){setMenuPen(false)}
+            selectMenu(2)
           }}
+        />
+        <Button
+          icon="fill"
+          color={menuColor}
+          onclick={() => {
+            selectMenu(3);
+          }}
+          dropdown={<DropdownColor />}
         />
         <Button
           icon="minus"
           thickness={menuThickness}
           onclick={() => {
-            setMenuThickness(!menuThickness);
-            setMenuColor(false);
-            setMenuText(false);
-            setMenuShapes(false);
-            setMenuEraser(false);
-            setMenuTrask(false);
+            selectMenu(4);
           }}
           dropdown={<DropdownThickness />}
         />
-        <Button icon="image" />
+        <Button
+          icon="image"
+          image = {menuImage}
+          onclick={() => {
+            selectMenu(5);
+          }}
+        />
         <Button
           icon="t"
           text={menuText}
           onclick={() => {
-            setMenuColor(false);
-            setMenuShapes(false);
-            setMenuThickness(false);
-            setMenuText(!menuText);
-            setMenuEraser(false)
-            setMenuTrask(false);
+            selectMenu(6);
           }}
           dropdown={<DropdownText />}
         />
@@ -75,27 +118,23 @@ export function Menu() {
           icon="shapes"
           shapes={menuShapes}
           onclick={() => {
-            setMenuThickness(false);
-            setMenuColor(false);
-            setMenuText(false);
-            setMenuShapes(!menuShapes);
+            selectMenu(7);
             setfiguras(true);
-            setMenuEraser(false);
-            setMenuTrask(false);
-            
           }}
           dropdown={<DropdownShapes />}
         />
-        <Button icon="save" />
-        <Button icon="trash" 
-          trash = {menuTrask}
+        <Button
+          icon="save"
+          save = {menuSave}
           onclick={() => {
-            setMenuThickness(false);
-            setMenuColor(false);
-            setMenuText(false);
-            setMenuShapes(false);
-            setMenuEraser(false);
-            setMenuTrask(!menuTrask);
+            selectMenu(8);
+          }}
+        />
+        <Button
+          icon="trash"
+          trash={menuTrash}
+          onclick={() => {
+            selectMenu(9);
             borrar();
           }}
         />
@@ -109,7 +148,15 @@ function Button(props) {
     <>
       <button
         className={
-          props.color || props.thickness || props.text || props.shapes || props.eraser || props.trash
+          props.pen ||
+          props.eraser ||
+          props.color ||
+          props.thickness ||
+          props.image ||
+          props.text ||
+          props.shapes ||
+          props.save ||
+          props.trash
             ? " dropdown button-menu"
             : " button-menu"
         }
@@ -128,34 +175,62 @@ function Button(props) {
 }
 
 function DropdownColor() {
-  const [,,,setColor] = useContext(context);
+  const [, , , setColor] = useContext(context);
   const [, setMenuColor] = useContext(menuContext);
-  console.log({setColor});
+  console.log({ setColor });
   return (
     <div className="dropdown-content">
       <h4>Seleccionar color</h4>
-      <ButtonColor color="black" click={()=>{setColor("black")}}/>
-      <ButtonColor color="red" click={()=>{setColor("red")}}/>
-      <ButtonColor color="yellow" click={()=>{setColor("yellow")}} />
-      <ButtonColor color="blue" click={()=>{setColor("blue")}}/>
-      <ButtonColor color="green" click={()=>{setColor("green")}}/>
-      <input type={"color"} onInput={(e)=>{
-        setColor(e.target.value);
-      }}></input>
+      <ButtonColor
+        color="black"
+        click={() => {
+          setColor("black");
+        }}
+      />
+      <ButtonColor
+        color="red"
+        click={() => {
+          setColor("red");
+        }}
+      />
+      <ButtonColor
+        color="yellow"
+        click={() => {
+          setColor("yellow");
+        }}
+      />
+      <ButtonColor
+        color="blue"
+        click={() => {
+          setColor("blue");
+        }}
+      />
+      <ButtonColor
+        color="green"
+        click={() => {
+          setColor("green");
+        }}
+      />
+      <input
+        type={"color"}
+        onInput={(e) => {
+          setColor(e.target.value);
+        }}
+      ></input>
     </div>
   );
 }
 
-function ButtonColor({ color,click }) {
+function ButtonColor({ color, click }) {
   return (
     <>
-      <button className={"button-menu " + color} onClick={click} ></button>
+      <button className={"button-menu " + color} onClick={click}></button>
     </>
   );
 }
 
 function DropdownThickness(props) {
-  const [,,,,thicknessValue, setThicknessValue] = useContext(context);
+  const [, , , , thicknessValue, setThicknessValue] = useContext(context);
   console.log(thicknessValue);
   return (
     <div className="dropdown-content">

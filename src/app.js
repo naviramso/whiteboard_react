@@ -7,7 +7,7 @@ export const context=createContext();
 export function App(){
 
     const [color,setColor] =useState("black");
-    const [pencil,setPencil]=useState(true);
+    const [pencil,setPencil]=useState(false);
     const [thicknessValue, setThicknessValue] = useState(1);
     const [figuras,setfiguras]=useState(false);
     const [cuadrado,setCuadrado]=useState(true);
