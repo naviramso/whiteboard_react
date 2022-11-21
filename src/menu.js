@@ -190,8 +190,10 @@ function DropdownShapes(props) {
 }
 
 function DropdownText(props) {
-  const [textValue, setTextValue] = useState("");
-  console.log(textValue);
+
+  var setTextValue =useContext( context)[11];
+  var textValue =useContext( context)[10];
+  //console.log(ctx);
   return (
     <div className="dropdown-content">
       <h4>Insertar Texto</h4>

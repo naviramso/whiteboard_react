@@ -1,3 +1,4 @@
+import { text } from "@fortawesome/fontawesome-svg-core";
 import zIndex from "@mui/material/styles/zIndex";
 import { borderRadius } from "@mui/system";
 import { useContext, useEffect, useState } from "react";
@@ -8,10 +9,11 @@ let canvasize ;
 let canvasCtx;
 
 export function Whiteboard() {
-  const [pencil,,color,,thicknessValue,,figuras,setfiguras,cuadrado]=useContext(context);
+  const [pencil,,color,,thicknessValue,,figuras,setfiguras,cuadrado,,textValue]=useContext(context);
   console.log(useContext(context));
   const [bandera,setbandera]=useState(false);
   const [dibujarcuadrado,setDibujarCuadrado]=useState(false);
+  const [escribir,setEscribir]=useState(false);
   const [puntosCuad,setPuntosCuad]=useState([0,0,0,0]);
 
   useEffect(()=>{
@@ -27,9 +29,7 @@ export function Whiteboard() {
     }
   })
 
-  useEffect(()=>{
-
-  })
+  
   useEffect(()=>{
     var fig=document.getElementById("figuras");
     if(figuras){ 
@@ -67,6 +67,14 @@ export function Whiteboard() {
           canvasCtx.lineWidth = thicknessValue;
           setPuntosCuad([event.clientX -canvasize.left,event.clientY - canvasize.top,event.clientX -canvasize.left,event.clientY - canvasize.top])
         }
+        if(textValue!=""){
+          setEscribir(true);
+          canvasCtx.font = thicknessValue*10+ "px Comic Sans MS";
+          console.log(textValue);
+          canvasCtx.fillStyle = color;
+          canvasCtx.textAlign = "center";
+          canvasCtx.fillText(textValue, event.clientX -canvasize.left, event.clientY - canvasize.top);
+        }
       }}
       onMouseMove={(event)=>{
         if(dibujarcuadrado){
@@ -74,17 +82,28 @@ export function Whiteboard() {
           setPuntosCuad([puntosCuad[0],puntosCuad[1],event.clientX -canvasize.left,event.clientY - canvasize.top])
           canvasCtx.strokeRect(puntosCuad[0],puntosCuad[1],puntosCuad[2]-puntosCuad[0],puntosCuad[3]-puntosCuad[1]);
         }
+        if(escribir){
+          canvasCtx.fillText(textValue, event.clientX -canvasize.left, event.clientY - canvasize.top);
+        }
       }}
       onMouseUp={()=>{
-        canvasCtx.clearRect(0,0,1800,1920)
-        const canvas= document.getElementById("micanvas");
-        canvasCtx=canvas.getContext("2d");
-        canvasCtx.strokeStyle=color;
-        canvasCtx.lineWidth = thicknessValue;
-        canvasCtx.strokeRect(puntosCuad[0],puntosCuad[1],puntosCuad[2]-puntosCuad[0],puntosCuad[3]-puntosCuad[1]);
-        setfiguras(false);
-        setPuntosCuad([0,0,0,0]);
-        setDibujarCuadrado(false);
+        if(cuadrado){
+          canvasCtx.clearRect(0,0,1800,1920)
+          const canvas= document.getElementById("micanvas");
+          canvasCtx=canvas.getContext("2d");
+          canvasCtx.strokeStyle=color;
+          canvasCtx.lineWidth = thicknessValue;
+          canvasCtx.strokeRect(puntosCuad[0],puntosCuad[1],puntosCuad[2]-puntosCuad[0],puntosCuad[3]-puntosCuad[1]);
+          canvasCtx.fillText(textValue, puntosCuad[2], puntosCuad[3]);
+          setEscribir(false);
+          setfiguras(false);
+          setPuntosCuad([0,0,0,0]);
+          setDibujarCuadrado(false);
+        }
+        if(escribir){
+
+        }
+        
       }}
       ></canvas>
     </div>

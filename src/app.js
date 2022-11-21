@@ -11,9 +11,10 @@ export function App(){
     const [thicknessValue, setThicknessValue] = useState(1);
     const [figuras,setfiguras]=useState(false);
     const [cuadrado,setCuadrado]=useState(true);
+    const [textValue, setTextValue] = useState("");
     
     return (
-        <context.Provider value={[pencil,setPencil,color,setColor,thicknessValue,setThicknessValue,figuras,setfiguras,cuadrado,setCuadrado]}>
+        <context.Provider value={[pencil,setPencil,color,setColor,thicknessValue,setThicknessValue,figuras,setfiguras,cuadrado,setCuadrado,textValue,setTextValue]}>
         <div className="container">
             <Menu></Menu>
             <Whiteboard></Whiteboard>
