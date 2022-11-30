@@ -9,7 +9,8 @@ import { borrar } from "./whiteboard";
 const menuContext = createContext();
 
 export function Menu() {
-  const [pencil, setPencil, color, setColor, , , , setfiguras] = useContext(context);
+  const [pencil, setPencil, color, setColor, , , , setfiguras] =
+    useContext(context);
   const [menuPen, setMenuPen] = useState(false);
   const [menuEraser, setMenuEraser] = useState(false);
   const [menuColor, setMenuColor] = useState(false);
@@ -21,6 +22,13 @@ export function Menu() {
   const [menuTrash, setMenuTrash] = useState(false);
 
   const selectMenu = (select) => {
+    setMenuColor(false);
+    setMenuThickness(false);
+    setMenuImage(false);
+    setMenuText(false);
+    setMenuShapes(false);
+    setMenuSave(false);
+    menuEraser || menuPen ? setPencil(true) : setPencil(false)
     switch (select) {
       case 1:
         setMenuPen(!menuPen);
@@ -54,7 +62,6 @@ export function Menu() {
     }
   };
 
-  let bb = false
   return (
     <menuContext.Provider value={[menuColor, setMenuColor]}>
       <div className="menu-container">
@@ -63,31 +70,32 @@ export function Menu() {
           pen={menuPen}
           onclick={() => {
             selectMenu(1);
-            setColor(color)
-            if(!bb){
-              setPencil(true)
-              setColor("black")
-            }
-            if(menuEraser){
-              setMenuEraser(false)
-            }
+            setColor(color);
+            setColor("black")
+            !menuPen || menuEraser ? setPencil(true) : setPencil(false)
+            if(menuEraser){ setMenuEraser(false)}
           }}
         />
         <Button
           icon="eraser"
           eraser={menuEraser}
           onclick={() => {
-            bb = true;
             setColor("white");
-            if(menuPen){setMenuPen(false)}
             selectMenu(2)
+            menuPen || !menuEraser ? setPencil(true) : setPencil(false)
+            if(menuPen){setMenuPen(false)}
           }}
         />
         <Button
           icon="fill"
           color={menuColor}
           onclick={() => {
+            if (menuEraser) {
+              setMenuEraser(false);
+            }
+            setMenuPen(true);
             selectMenu(3);
+            
           }}
           dropdown={<DropdownColor />}
         />
@@ -101,7 +109,7 @@ export function Menu() {
         />
         <Button
           icon="image"
-          image = {menuImage}
+          image={menuImage}
           onclick={() => {
             selectMenu(5);
           }}
@@ -125,7 +133,7 @@ export function Menu() {
         />
         <Button
           icon="save"
-          save = {menuSave}
+          save={menuSave}
           onclick={() => {
             selectMenu(8);
           }}
@@ -154,10 +162,8 @@ function Button(props) {
           props.thickness ||
           props.image ||
           props.text ||
-          props.shapes ||
-          props.save ||
-          props.trash
-            ? " dropdown button-menu"
+          props.shapes
+            ? " dropdown button-menu border"
             : " button-menu"
         }
         onClick={props.onclick}
