@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from "react";
 import { context } from "./app";
 import { Slider } from "@mui/material";
 import { Box } from "@mui/system";
-import { borrar } from "./whiteboard";
+import { borrar, saveImage } from "./whiteboard";
 
 const menuContext = createContext();
 
@@ -136,6 +136,7 @@ export function Menu() {
           save={menuSave}
           onclick={() => {
             selectMenu(8);
+            saveImage();
           }}
         />
         <Button
