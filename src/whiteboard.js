@@ -14,7 +14,9 @@ export function Whiteboard() {
   const [bandera,setbandera]=useState(false);
   const [dibujarcuadrado,setDibujarCuadrado]=useState(false);
   const [escribir,setEscribir]=useState(false);
+  const [textPosition,setTextPosition]=useState([0,0]);
   const [puntosCuad,setPuntosCuad]=useState([0,0,0,0]);
+
 
   useEffect(()=>{
     if(!figuras){
@@ -29,7 +31,10 @@ export function Whiteboard() {
     }
   })
 
-  
+  useEffect(()=>{
+    canvasCtx.fillStyle="white"
+    canvasCtx.fillRect(0,0,1800,1920)
+  },[])
   useEffect(()=>{
     var fig=document.getElementById("figuras");
     if(figuras){ 
@@ -69,11 +74,12 @@ export function Whiteboard() {
         }
         if(textValue!=""){
           setEscribir(true);
-          canvasCtx.font = thicknessValue*10+ "px Comic Sans MS";
+          canvasCtx.font = thicknessValue*4+ "px Comic Sans MS";
           console.log(textValue);
           canvasCtx.fillStyle = color;
           canvasCtx.textAlign = "center";
           canvasCtx.fillText(textValue, event.clientX -canvasize.left, event.clientY - canvasize.top);
+          //setTextPosition([event.clientX -canvasize.left,event.clientY - canvasize.to ])
         }
       }}
       onMouseMove={(event)=>{
@@ -83,10 +89,12 @@ export function Whiteboard() {
           canvasCtx.strokeRect(puntosCuad[0],puntosCuad[1],puntosCuad[2]-puntosCuad[0],puntosCuad[3]-puntosCuad[1]);
         }
         if(escribir){
+          canvasCtx.clearRect(0,0,1800,1920)
+          canvasCtx.fillStyle=color;
           canvasCtx.fillText(textValue, event.clientX -canvasize.left, event.clientY - canvasize.top);
         }
       }}
-      onMouseUp={()=>{
+      onMouseUp={(event)=>{
         if(cuadrado){
           canvasCtx.clearRect(0,0,1800,1920)
           const canvas= document.getElementById("micanvas");
@@ -94,14 +102,19 @@ export function Whiteboard() {
           canvasCtx.strokeStyle=color;
           canvasCtx.lineWidth = thicknessValue;
           canvasCtx.strokeRect(puntosCuad[0],puntosCuad[1],puntosCuad[2]-puntosCuad[0],puntosCuad[3]-puntosCuad[1]);
-          canvasCtx.fillText(textValue, puntosCuad[2], puntosCuad[3]);
-          setEscribir(false);
-          setfiguras(false);
+          
           setPuntosCuad([0,0,0,0]);
           setDibujarCuadrado(false);
         }
         if(escribir){
-
+          canvasCtx.clearRect(0,0,1800,1920)
+          const canvas= document.getElementById("micanvas");
+          canvasCtx=canvas.getContext("2d")
+          canvasCtx.fillStyle=color;
+          canvasCtx.fillText(textValue, event.clientX -canvasize.left, event.clientY - canvasize.top);
+          setEscribir(false);
+          setfiguras(false);
+          
         }
         
       }}
@@ -110,5 +123,6 @@ export function Whiteboard() {
   );
 }
 export function borrar(){
-    canvasCtx.clearRect(0,0,1800,1920);
+  canvasCtx.fillStyle="white"
+  canvasCtx.fillRect(0,0,1800,1920)
 }

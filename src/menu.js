@@ -17,7 +17,7 @@ export function Menu() {
   const [menuEraser,setMenuEraser]= useState(false);
   const [menuTrask,setMenuTrask] =useState(false);
   return (
-    <menuContext.Provider value={[menuColor, setMenuColor]}>
+    <menuContext.Provider value={[menuColor, setMenuColor,menuText,setMenuText]}>
       <div className="menu-container">
         <Button
           icon="pen"
@@ -78,7 +78,7 @@ export function Menu() {
             setMenuColor(false);
             setMenuText(false);
             setMenuShapes(!menuShapes);
-            setfiguras(true);
+            //setfiguras(true);
             setMenuEraser(false);
             setMenuTrask(false);
             
@@ -190,9 +190,12 @@ function DropdownShapes(props) {
 }
 
 function DropdownText(props) {
-
+  var setMenuText = useContext(menuContext)[3];
+  var menuText= useContext(menuContext)[2]
   var setTextValue =useContext( context)[11];
   var textValue =useContext( context)[10];
+  var setfiguras =useContext(context)[7];
+
   //console.log(ctx);
   return (
     <div className="dropdown-content">
@@ -208,6 +211,8 @@ function DropdownText(props) {
         onClick={() => {
           const text = document.getElementById("text");
           setTextValue(text.value);
+          setfiguras(true);
+          setMenuText(!menuText);
         }}
       >
         <FontAwesomeIcon icon={"chevron-up"} size="xl" color="white" />
