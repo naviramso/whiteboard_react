@@ -9,12 +9,13 @@ let canvasize ;
 let canvasCtx;
 
 export function Whiteboard() {
-  const [pencil,,color,,thicknessValue,,figuras,setfiguras,cuadrado,setCuadrado,textValue,setTextValue,triangulo,setTriangulo,circulo,setCirculo]=useContext(context);
+  const [pencil,setPencil,color,,thicknessValue,,figuras,setfiguras,cuadrado,setCuadrado,textValue,setTextValue,triangulo,setTriangulo,circulo,setCirculo]=useContext(context);
   console.log(useContext(context));
   const [bandera,setbandera]=useState(false);
   const [dibujarcuadrado,setDibujarCuadrado]=useState(false);
   const [escribir,setEscribir]=useState(false);
   const [dibujarCirculo,setDibujarCirculo]=useState(false);
+  const [dibujarTriangulo,setDibujarTriangulo]=useState(false);
   const [puntosCuad,setPuntosCuad]=useState([0,0,0,0]);
   const [puntosCir,setPuntosCir]=useState([0,0]);
 
@@ -64,7 +65,11 @@ export function Whiteboard() {
         canvasCtx.stroke();
       }
       }} onMouseUp={()=>{
-        setbandera(false);
+        if(bandera){
+          setbandera(false);
+
+        }
+        
 
       }} ></canvas>
       <canvas id="figuras" width={1000} height={600} onMouseDown={(event)=>{
@@ -77,7 +82,7 @@ export function Whiteboard() {
     
         if(textValue!=""){
           setEscribir(true);
-          canvasCtx.font = thicknessValue*4+ "px Comic Sans MS";
+          canvasCtx.font = (thicknessValue*3+10 )+ "px Comic Sans MS";
           console.log(textValue);
           canvasCtx.fillStyle = color;
           canvasCtx.textAlign = "center";
@@ -85,12 +90,16 @@ export function Whiteboard() {
           //setTextPosition([event.clientX -canvasize.left,event.clientY - canvasize.to ])
         }
         if(circulo){
-          console.log("asdfa");
-          setCirculo(true);
           canvasCtx.strokeStyle=color;
           canvasCtx.lineWidth = thicknessValue;
           setPuntosCir([event.clientX -canvasize.left,event.clientY - canvasize.top])
           setDibujarCirculo(true);
+        }
+        if(triangulo){
+          canvasCtx.strokeStyle=color;
+          canvasCtx.lineWidth = thicknessValue;
+          setPuntosCir([event.clientX -canvasize.left,event.clientY - canvasize.top])
+          setDibujarTriangulo(true);
         }
       }}
       onMouseMove={(event)=>{
@@ -104,11 +113,22 @@ export function Whiteboard() {
           canvasCtx.fillText(textValue, event.clientX -canvasize.left, event.clientY - canvasize.top);
         }
         if(dibujarCirculo){
+          canvasCtx.beginPath();
           canvasCtx.clearRect(0,0,1800,1920)
           const x=Math.abs((event.clientX -canvasize.left)-puntosCir[0]);
           canvasCtx.arc(puntosCir[0],puntosCir[1],x, 0, Math.PI * 2);
           canvasCtx.stroke();
 
+        }
+        if(dibujarTriangulo){
+          canvasCtx.clearRect(0,0,1800,1920)
+          canvasCtx.beginPath();
+          canvasCtx.moveTo(puntosCir[0],puntosCir[1]);
+          canvasCtx.lineTo(event.clientX -canvasize.left, event.clientY - canvasize.top);
+          const x=(event.clientX -canvasize.left)-puntosCir[0]
+          canvasCtx.lineTo(puntosCir[0]-x, event.clientY - canvasize.top)
+          canvasCtx.closePath();
+          canvasCtx.stroke();
         }
       }}
       onMouseUp={(event)=>{
@@ -129,7 +149,7 @@ export function Whiteboard() {
         if(escribir){
           
           canvasCtx.fillStyle=color;
-          canvasCtx.font = thicknessValue*5+ "px Comic Sans MS";
+          canvasCtx.font = (thicknessValue*3+10)+ "px Comic Sans MS";
           canvasCtx.textAlign = "center";
           canvasCtx.fillText(textValue, event.clientX -canvasize.left, event.clientY - canvasize.top);
           setEscribir(false);
@@ -137,6 +157,7 @@ export function Whiteboard() {
           setTextValue("");        
         }
         if(circulo){
+          canvasCtx.beginPath();
           canvasCtx.strokeStyle=color;
           canvasCtx.lineWidth = thicknessValue;
           const x=Math.abs((event.clientX -canvasize.left)-puntosCir[0]);
@@ -147,7 +168,19 @@ export function Whiteboard() {
           setfiguras(false);
           setCirculo(false);
         }
-        
+        if(triangulo){
+          canvasCtx.beginPath();
+          canvasCtx.moveTo(puntosCir[0],puntosCir[1]);
+          canvasCtx.lineTo(event.clientX -canvasize.left, event.clientY - canvasize.top);
+          const x=(event.clientX -canvasize.left)-puntosCir[0]
+          canvasCtx.lineTo(puntosCir[0]-x, event.clientY - canvasize.top)
+          canvasCtx.closePath();
+          canvasCtx.stroke();
+          setPuntosCir([0,0]);
+          setTriangulo(false);
+          setfiguras(false);
+          setDibujarTriangulo(false);
+        }
       }}
       ></canvas>
     </div>

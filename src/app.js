@@ -7,7 +7,7 @@ export const context=createContext();
 export function App(){
 
     const [color,setColor] =useState("black");
-    const [pencil,setPencil]=useState(true);
+    const [pencil,setPencil]=useState(false);
     const [thicknessValue, setThicknessValue] = useState(1);
     const [figuras,setfiguras]=useState(false);
     const [cuadrado,setCuadrado]=useState(false);
@@ -18,8 +18,9 @@ export function App(){
     return (
         <context.Provider value={[pencil,setPencil,color,setColor,thicknessValue,setThicknessValue,figuras,setfiguras,cuadrado,setCuadrado,textValue,setTextValue,triangulo,setTriangulo,circulo,setCirculo]}>
         <div className="container">
-            <Menu></Menu>
+            
             <Whiteboard></Whiteboard>
+            <Menu></Menu>
         </div>
         </context.Provider>
     );
