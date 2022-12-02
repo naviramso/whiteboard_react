@@ -134,7 +134,7 @@ export const saveImage = () => {
   let image = canvas.toDataURL();
   let link = document.createElement("a");
   link.href = image; 
-  link.download = "saveimgcanvas";
+  link.download = "canvas";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
