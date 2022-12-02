@@ -78,7 +78,6 @@ export function Menu() {
             setMenuColor(false);
             setMenuText(false);
             setMenuShapes(!menuShapes);
-            //setfiguras(true);
             setMenuEraser(false);
             setMenuTrask(false);
             
@@ -179,11 +178,20 @@ function DropdownThickness(props) {
 }
 
 function DropdownShapes(props) {
+  var setfiguras=useContext(context)[7];
+  var setCuadrado=useContext(context)[9];
+  var setCirculo=useContext(context)[15];
   return (
     <div className="dropdown-content">
       <h4> Isertar Figura</h4>
-      <Button icon="circle" />
-      <Button icon="square" />
+      <Button icon="circle" onclick={()=>{
+        setfiguras(true);
+        setCirculo(true);
+      }}/>
+      <Button icon="square" onclick={()=>{
+        setCuadrado(true);
+        setfiguras(true);
+      }} />
       <Button icon="triangle-exclamation" />
     </div>
   );
