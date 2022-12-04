@@ -18,6 +18,7 @@ export function Whiteboard() {
   const [dibujarTriangulo,setDibujarTriangulo]=useState(false);
   const [puntosCuad,setPuntosCuad]=useState([0,0,0,0]);
   const [puntosCir,setPuntosCir]=useState([0,0]);
+  const [valueScroll,setValueScroll] =useState(0);
 
 
   useEffect(()=>{
@@ -30,8 +31,26 @@ export function Whiteboard() {
       const canvas= document.getElementById("figuras");
       canvasCtx=canvas.getContext("2d");
       canvasize = canvas.getBoundingClientRect();
+
     }
   })
+  const scroll= ()=>{
+    const scrolled = document.documentElement.scrollTop;
+    if (scrolled > valueScroll){
+      console.log("a");
+      setValueScroll(scrolled)
+    } 
+    else if (scrolled < valueScroll){
+      console.log("b");
+      setValueScroll(scrolled)
+    }
+  }
+  window.addEventListener("scroll",scroll);
+  window.scroll({
+    top: 100,
+    left: 100,
+    behavior: 'smooth'
+  });
 
   useEffect(()=>{
     canvasCtx.fillStyle="white"
@@ -41,6 +60,7 @@ export function Whiteboard() {
     var fig=document.getElementById("figuras");
     if(figuras){ 
       fig.style.zIndex=2;
+      
     }
     else{
       fig.style.zIndex=-1;
@@ -48,6 +68,7 @@ export function Whiteboard() {
     }
   },[figuras])
 
+  useEffect(()=>{},[escribir])
   return (
     <div className="canvas">
       
