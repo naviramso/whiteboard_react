@@ -1,46 +1,37 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 export function Image() {
-  let [image, setImage] = useState({
-    Images: []
+  let [images, setImage] = useState({
+    images: [],
+    state: false,
   });
 
-  // useEffect(() => {
-  //   axios.get("/api/get").then((res) => {
-  //     setImage(res.data);
-  //   });
-  // }, []);
-
-  const handleChange = (e) => {
-    let nam = e.target.name;
-    let val = e.target.value;
-    setImage({ [nam]: val });
-  };
-
-  const handleChange2 = () => {
-    setImage({});
-  };
-
-  const submit = () => {
-    axios.post("/api/insert", image).then(() => {
-      alert("success post");
+  useEffect(() => {
+    axios.get("/api/get").then((result) => {
+      setImage({
+        images: result.data,
+        state: true,
+      });
     });
-    console.log(image);
-    document.location.reload();
-  };
+  }, []);
 
-  const delet = (id) => {
-      axios.delete("/api/delete/${id}");
-      document.location.reload();
-  };
+  console.log(images);
+  let image = images.images.map((val, key) => {
+    return(
+      <React.Fragment>
+        <image src = {images.images.nameImage} />
+        {console.log(images.images.nameImage)}
+      </React.Fragment>
+    )
+  })
 
   return (
     <div>
-      <img src="" className=""></img>
-      <button onClick={delet(image.id)}>
+      {image}
+      <button>
         <FontAwesomeIcon icon="trash" />
       </button>
     </div>

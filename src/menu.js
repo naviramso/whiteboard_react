@@ -5,6 +5,7 @@ import { context } from "./app";
 import { Slider } from "@mui/material";
 import { Box } from "@mui/system";
 import { borrar, saveImage } from "./whiteboard";
+import { submit } from "./API/api";
 
 const menuContext = createContext();
 
@@ -28,7 +29,7 @@ export function Menu() {
     setMenuText(false);
     setMenuShapes(false);
     setMenuSave(false);
-    menuEraser || menuPen ? setPencil(true) : setPencil(false)
+    menuEraser || menuPen ? setPencil(true) : setPencil(false);
     switch (select) {
       case 1:
         setMenuPen(!menuPen);
@@ -65,27 +66,34 @@ export function Menu() {
   return (
     <menuContext.Provider value={[menuColor, setMenuColor]}>
       <div className="menu-container">
+        {/* Boton Lapiz*/}
         <Button
           icon="pen"
           pen={menuPen}
           onclick={() => {
             selectMenu(1);
             setColor(color);
-            setColor("black")
-            !menuPen || menuEraser ? setPencil(true) : setPencil(false)
-            if(menuEraser){ setMenuEraser(false)}
+            setColor("black");
+            !menuPen || menuEraser ? setPencil(true) : setPencil(false);
+            if (menuEraser) {
+              setMenuEraser(false);
+            }
           }}
         />
+        {/* Boton Borrador*/}
         <Button
           icon="eraser"
           eraser={menuEraser}
           onclick={() => {
             setColor("white");
-            selectMenu(2)
-            menuPen || !menuEraser ? setPencil(true) : setPencil(false)
-            if(menuPen){setMenuPen(false)}
+            selectMenu(2);
+            menuPen || !menuEraser ? setPencil(true) : setPencil(false);
+            if (menuPen) {
+              setMenuPen(false);
+            }
           }}
         />
+        {/* Boton Color*/}
         <Button
           icon="fill"
           color={menuColor}
@@ -95,10 +103,10 @@ export function Menu() {
             }
             setMenuPen(true);
             selectMenu(3);
-            
           }}
           dropdown={<DropdownColor />}
         />
+        {/* Boton Grosor*/}
         <Button
           icon="minus"
           thickness={menuThickness}
@@ -107,13 +115,16 @@ export function Menu() {
           }}
           dropdown={<DropdownThickness />}
         />
+        {/* Boton Imagen*/}
         <Button
           icon="image"
           image={menuImage}
           onclick={() => {
             selectMenu(5);
           }}
+          dropdown={<DropdownImage />}
         />
+        {/* Boton Text*/}
         <Button
           icon="t"
           text={menuText}
@@ -122,6 +133,7 @@ export function Menu() {
           }}
           dropdown={<DropdownText />}
         />
+        {/* Boton Figuras*/}
         <Button
           icon="shapes"
           shapes={menuShapes}
@@ -131,14 +143,17 @@ export function Menu() {
           }}
           dropdown={<DropdownShapes />}
         />
+        {/* Boton Guardar*/}
         <Button
           icon="save"
           save={menuSave}
           onclick={() => {
             selectMenu(8);
-            saveImage();
+            let image = saveImage();
+            submit(image);
           }}
         />
+        {/* Boton LimpiarLienzo*/}
         <Button
           icon="trash"
           trash={menuTrash}
@@ -176,6 +191,7 @@ function Button(props) {
         {props.text && props.dropdown}
         {props.thickness && props.dropdown}
         {props.shapes && props.dropdown}
+        {props.image && props.dropdown}
       </div>
     </>
   );
@@ -297,3 +313,29 @@ function DropdownText(props) {
     </div>
   );
 }
+
+const DropdownImage = () => {
+  const [imageFile, setImageFile] = useState("");
+  console.log(imageFile.name)
+  return (
+    <div className="dropdown-content">
+      <h4>Insertar Imagen</h4>
+      <input
+        className=""
+        type="file"
+        id="image"
+        name="image"
+        accept="image/png, image/jpeg"
+      ></input>
+      <button
+        className="button-text"
+        onClick={() => {
+          const image = document.getElementById("image").file[0];
+          setImageFile(image);
+        }}
+      >
+        accept
+      </button>
+    </div>
+  );
+};

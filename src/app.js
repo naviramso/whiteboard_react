@@ -30,9 +30,9 @@ export function App() {
     >
       
       <div className="container">
+        <Image></Image>
         <Whiteboard></Whiteboard>
         <Menu></Menu>
-        <Image/>
       </div>
     </context.Provider>
   );
