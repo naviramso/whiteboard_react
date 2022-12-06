@@ -1,13 +1,13 @@
 import zIndex from "@mui/material/styles/zIndex";
 import { borderRadius } from "@mui/system";
+import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { context } from "./app";
 import "./whiteboard.css";
 
-let canvas; 
+let canvas;
 let canvasize;
 let canvasCtx;
-
 
 export function Whiteboard() {
   const [pencil, , color, , thicknessValue, , figuras, setfiguras, cuadrado] =
@@ -72,6 +72,7 @@ export function Whiteboard() {
       ></canvas>
       <canvas
         id="figuras"
+        name="image"
         width={1000}
         height={600}
         onMouseDown={(event) => {
@@ -129,13 +130,8 @@ export function borrar() {
   canvasCtx.clearRect(0, 0, 1800, 1920);
 }
 
-export const saveImage = () => {
-  canvas = document.getElementById("micanvas")
-  let image = canvas.toDataURL();
-  let link = document.createElement("a");
-  link.href = image; 
-  link.download = "canvas";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+export const getCanvas = () => {
+  canvas = document.getElementById("micanvas");
+  canvas.name = "image";
+  return canvas;
 };

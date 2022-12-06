@@ -5,7 +5,7 @@ import { context } from "./app";
 import { Slider } from "@mui/material";
 import { Box } from "@mui/system";
 import { borrar, saveImage } from "./whiteboard";
-import { submit } from "./API/api";
+import { upload } from "./API/api";
 
 const menuContext = createContext();
 
@@ -62,6 +62,7 @@ export function Menu() {
         break;
     }
   };
+
 
   return (
     <menuContext.Provider value={[menuColor, setMenuColor]}>
@@ -149,8 +150,7 @@ export function Menu() {
           save={menuSave}
           onclick={() => {
             selectMenu(8);
-            let image = saveImage();
-            submit(image);
+            upload()
           }}
         />
         {/* Boton LimpiarLienzo*/}
@@ -315,7 +315,7 @@ function DropdownText(props) {
 }
 
 const DropdownImage = () => {
-  const [imageFile, setImageFile] = useState("");
+  const [imageFile, setImageFile] = useState();
   console.log(imageFile.name)
   return (
     <div className="dropdown-content">
@@ -329,9 +329,9 @@ const DropdownImage = () => {
       ></input>
       <button
         className="button-text"
-        onClick={() => {
-          const image = document.getElementById("image").file[0];
-          setImageFile(image);
+        onClick={(e) => {
+          let file = e.target.files[0]
+          setImageFile(file);
         }}
       >
         accept
