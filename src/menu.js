@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from "react";
 import { context } from "./app";
 import { Slider } from "@mui/material";
 import { Box } from "@mui/system";
-import { borrar, saveImage } from "./whiteboard";
+import { borrar } from "./whiteboard";
 import { upload } from "./API/api";
 
 const menuContext = createContext();
@@ -63,9 +63,10 @@ export function Menu() {
     }
   };
 
-
   return (
-    <menuContext.Provider value={[menuColor, setMenuColor]}>
+    <menuContext.Provider
+      value={[menuColor, setMenuColor, menuText, setMenuText]}
+    >
       <div className="menu-container">
         {/* Boton Lapiz*/}
         <Button
@@ -140,7 +141,6 @@ export function Menu() {
           shapes={menuShapes}
           onclick={() => {
             selectMenu(7);
-            setfiguras(true);
           }}
           dropdown={<DropdownShapes />}
         />
@@ -150,7 +150,7 @@ export function Menu() {
           save={menuSave}
           onclick={() => {
             selectMenu(8);
-            upload()
+            upload();
           }}
         />
         {/* Boton LimpiarLienzo*/}
@@ -279,19 +279,46 @@ function DropdownThickness(props) {
 }
 
 function DropdownShapes(props) {
+  var setfiguras = useContext(context)[7];
+  var setCuadrado = useContext(context)[9];
+  var setTriangulo = useContext(context)[13];
+  var setCirculo = useContext(context)[15];
   return (
     <div className="dropdown-content">
       <h4> Isertar Figura</h4>
-      <Button icon="circle" />
-      <Button icon="square" />
-      <Button icon="triangle-exclamation" />
+      <Button
+        icon="circle"
+        onclick={() => {
+          setfiguras(true);
+          setCirculo(true);
+        }}
+      />
+      <Button
+        icon="square"
+        onclick={() => {
+          setCuadrado(true);
+          setfiguras(true);
+        }}
+      />
+      <Button
+        icon="triangle-exclamation"
+        onclick={() => {
+          setTriangulo(true);
+          setfiguras(true);
+        }}
+      />
     </div>
   );
 }
 
 function DropdownText(props) {
-  const [textValue, setTextValue] = useState("");
-  console.log(textValue);
+  var setMenuText = useContext(menuContext)[3];
+  var menuText = useContext(menuContext)[2];
+  var setTextValue = useContext(context)[11];
+  var textValue = useContext(context)[10];
+  var setfiguras = useContext(context)[7];
+
+  //console.log(ctx);
   return (
     <div className="dropdown-content">
       <h4>Insertar Texto</h4>
@@ -306,6 +333,8 @@ function DropdownText(props) {
         onClick={() => {
           const text = document.getElementById("text");
           setTextValue(text.value);
+          setfiguras(true);
+          setMenuText(!menuText);
         }}
       >
         <FontAwesomeIcon icon={"chevron-up"} size="xl" color="white" />
@@ -316,7 +345,7 @@ function DropdownText(props) {
 
 const DropdownImage = () => {
   const [imageFile, setImageFile] = useState();
-  console.log(imageFile.name)
+  console.log(imageFile.name);
   return (
     <div className="dropdown-content">
       <h4>Insertar Imagen</h4>
@@ -330,7 +359,7 @@ const DropdownImage = () => {
       <button
         className="button-text"
         onClick={(e) => {
-          let file = e.target.files[0]
+          let file = e.target.files[0];
           setImageFile(file);
         }}
       >

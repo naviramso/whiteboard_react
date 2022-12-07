@@ -2,8 +2,6 @@ import { Whiteboard } from "./whiteboard";
 import { Menu, menuContext } from "./menu";
 import "./styles.css";
 import { createContext, useState } from "react";
-import { Image } from "./image";
-
 
 export const context = createContext();
 export function App() {
@@ -11,7 +9,10 @@ export function App() {
   const [pencil, setPencil] = useState(false);
   const [thicknessValue, setThicknessValue] = useState(1);
   const [figuras, setfiguras] = useState(false);
-  const [cuadrado, setCuadrado] = useState(true);
+  const [cuadrado, setCuadrado] = useState(false);
+  const [triangulo, setTriangulo] = useState(false);
+  const [circulo, setCirculo] = useState(false);
+  const [textValue, setTextValue] = useState("");
 
   return (
     <context.Provider
@@ -26,16 +27,18 @@ export function App() {
         setfiguras,
         cuadrado,
         setCuadrado,
+        textValue,
+        setTextValue,
+        triangulo,
+        setTriangulo,
+        circulo,
+        setCirculo,
       ]}
     >
-      
       <div className="container">
-        <Image></Image>
         <Whiteboard></Whiteboard>
         <Menu></Menu>
       </div>
     </context.Provider>
   );
 }
-
-

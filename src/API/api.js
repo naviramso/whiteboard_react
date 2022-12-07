@@ -26,7 +26,7 @@ export const upload = () => {
   const canvas = getCanvas();
   let image = dataURItoBlob(canvas.toDataURL());
   let fd = new FormData();
-  
+
   fd.append("image", image);
   axios
     .post("/api/upload", fd)
@@ -34,16 +34,6 @@ export const upload = () => {
     .catch((err) => console.log(err));
 };
 
-export const submit = () => {
-  axios
-    .post("/api/insert", "canvas" + element)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-};
 
 const deleteImage = (id) => {
   axios.delete("/api/delete/${id}");
