@@ -5,6 +5,9 @@ import { createContext, useState } from "react";
 
 export const context = createContext();
 export function App() {
+
+  
+
   const [color, setColor] = useState("black");
   const [pencil, setPencil] = useState(false);
   const [thicknessValue, setThicknessValue] = useState(1);
@@ -13,6 +16,7 @@ export function App() {
   const [triangulo, setTriangulo] = useState(false);
   const [circulo, setCirculo] = useState(false);
   const [textValue, setTextValue] = useState("");
+
 
   return (
     <context.Provider
