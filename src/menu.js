@@ -120,14 +120,14 @@ export function Menu() {
           dropdown={<DropdownThickness />}
         />
         {/* Boton Imagen*/}
-        <Button
+        {/* <Button
           icon="image"
           image={menuImage}
           onclick={() => {
             selectMenu(5);
           }}
           dropdown={<DropdownImage />}
-        />
+        /> */}
         {/* Boton Text*/}
         <Button
           icon="t"
@@ -346,28 +346,30 @@ function DropdownText(props) {
   );
 }
 
-const DropdownImage = () => {
-  const [imageFile, setImageFile] = useState();
-  console.log(imageFile.name);
-  return (
-    <div className="dropdown-content">
-      <h4>Insertar Imagen</h4>
-      <input
-        className=""
-        type="file"
-        id="image"
-        name="image"
-        accept="image/png, image/jpeg"
-      ></input>
-      <button
-        className="button-text"
-        onClick={(e) => {
-          let file = e.target.files[0];
-          setImageFile(file);
-        }}
-      >
-        accept
-      </button>
-    </div>
-  );
-};
+// const DropdownImage = () => {
+//   const [imageFile, setImageFile] = useState();
+  
+//   return (
+//     <div className="dropdown-content">
+//       <form method="post">
+//         <label>escoger imagen</label>
+//         <input
+//           className=""
+//           type="file"
+//           id="image"
+//           name="image"
+//           accept="image/png, image/jpeg"
+//           onChange={(e) => {
+//             const file = e.target.files[0];
+//             if (file) {
+//               console.log(file.name);
+//               const reader = new FileReader(); 
+//               const url = URL.createObjectURL(file);
+//               console.log(url)
+//             }
+//           }}
+//         ></input>
+//       </form>
+//     </div>
+//   );
+// };

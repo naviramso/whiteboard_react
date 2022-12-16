@@ -6,10 +6,10 @@
     position: fixed;
     right: 0%;
     top:0;   
-    padding: 5px;
     z-index: 0;
     flex-direction: column;
-    overflow-y: auto;    
+    overflow-y: auto;  
+    border-radius:  25px;
 }
 
 .button-user {
@@ -46,4 +46,8 @@
     margin: 5px;
     border-radius: 10%;
     cursor: pointer;
+}
+
+h3 {
+    margin-top: 30px;
 }

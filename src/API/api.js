@@ -39,3 +39,4 @@ const deleteImage = (id) => {
   axios.delete("/api/delete/${id}");
   document.location.reload();
 };
+
