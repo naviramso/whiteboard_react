@@ -49,6 +49,7 @@ export function App() {
         setRoute,
         updateIma,
         setUpdateIma,
+        admin
       ]}
     >
       <div className="container">

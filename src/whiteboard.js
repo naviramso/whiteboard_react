@@ -4,11 +4,12 @@ import { borderRadius } from "@mui/system";
 import { useContext, useEffect, useState } from "react";
 import { context } from "./app";
 import "./whiteboard.css";
+import {dataURItoBlob} from "./API/api"
 
 import io from "socket.io-client";
 import { useParams } from "react-router-dom";
 
-const socket = io("http://localhost:3001");
+export const socket = io("http://localhost:3001");
 
 let canvasize;
 let canvasCtx;
@@ -35,7 +36,8 @@ export function Whiteboard() {
     ,
     setUsuarios,
     imageRoute,
-    ,
+    ,,,
+    admin
   ] = useContext(context);
   const [bandera, setbandera] = useState(false);
   const [dibujarcuadrado, setDibujarCuadrado] = useState(false);
@@ -81,6 +83,25 @@ export function Whiteboard() {
       }
       setUsuarios(usuarios);
     });
+    socket.on("admin",(adm)=>{
+      console.log("este es admin"+adm)
+      setAdmin(adm);
+      
+    })
+   /* socket.on("canvas",(idUsu)=>{
+      console.log("este wye te pide imagen"+idUsu)
+      const canvas = getCanvas();
+    let image = dataURItoBlob(canvas.toDataURL());
+      //const imagen="";
+      socket.emit("imagen",image,idUsu)
+    })
+   /* socket.on("guardarImagen",(imagen)=>{
+        const canvas = document.getElementById("micanvas");
+        canvasCtx = canvas.getContext("2d");
+        canvasCtx.fillStyle = "white";
+
+        canvasCtx.drawImage(imagen, 0, 0);
+    })*/
   }, []);
 
   useEffect(() => {
@@ -163,7 +184,9 @@ export function Whiteboard() {
           message.linePunto[0],
           message.linePunto[1]
         );
+
       }
+      //console.log(admin);
     }
   });
   /*const scroll = () => {
