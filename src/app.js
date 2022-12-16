@@ -3,6 +3,7 @@ import { Menu, menuContext } from "./menu";
 import "./styles.css";
 import { createContext, useState } from "react";
 import {Image} from "./image.js"
+import { Outlet, Link } from "react-router-dom";
 
 export const context = createContext();
 export function App() {
@@ -37,14 +38,17 @@ export function App() {
         triangulo,
         setTriangulo,
         circulo,
-        setCirculo,
+        setCirculo
       ]}
     >
       <div className="container">
+        
         <Whiteboard></Whiteboard>
         <Menu></Menu>
         <Image /> 
       </div>
+ 
     </context.Provider>
   );
+
 }
