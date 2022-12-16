@@ -9,31 +9,28 @@ export function Image() {
     state: false,
   });
 
+  let [idImage, setId] = useState(0);
+
   useEffect(() => {
-    axios.get("/api/get").then((result) => {
-      setImage({
-        images: result.data,
-        state: true,
-      });
-    });
+    const getImages = async () => {
+      const result = await axios.get("/api/get");
+      setImage({ images: result.data });
+      console.log(result.data);
+    };
+    getImages();
   }, []);
 
-  console.log(images);
-  let image = images.images.map((val, key) => {
-    return(
-      <React.Fragment>
-        <image src = {images.images.nameImage} />
-        {console.log(images.images.nameImage)}
-      </React.Fragment>
-    )
-  })
+  let image = images.images.map((ima) => {
+    console.log(ima);
+    return (
+      <>
+        <div style={{backgroundImage = `url($ima.route)`}} key={ima.id}></img>
+        <button>
+          <FontAwesomeIcon icon="trash" />
+        </button>
+      </>
+    );
+  });
 
-  return (
-    <div>
-      {image}
-      <button>
-        <FontAwesomeIcon icon="trash" />
-      </button>
-    </div>
-  );
+  return <div>{image}</div>;
 }

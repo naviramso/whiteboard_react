@@ -2,6 +2,7 @@ import { Whiteboard } from "./whiteboard";
 import { Menu, menuContext } from "./menu";
 import "./styles.css";
 import { createContext, useState } from "react";
+import {Image} from "./image.js"
 
 export const context = createContext();
 export function App() {
@@ -42,6 +43,7 @@ export function App() {
       <div className="container">
         <Whiteboard></Whiteboard>
         <Menu></Menu>
+        <Image /> 
       </div>
     </context.Provider>
   );
