@@ -3,7 +3,7 @@ import { getCanvas } from "../whiteboard";
 
 let element = 1;
 
-const dataURItoBlob = function (dataURI) {
+export const dataURItoBlob = function (dataURI) {
   // convert base64/URLEncoded data component to raw binary data held in a string
   var byteString;
   if (dataURI.split(",")[0].indexOf("base64") >= 0)
