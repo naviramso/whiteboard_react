@@ -10,7 +10,6 @@
     z-index: 0;
     flex-direction: column;
     overflow-y: auto;    
-    align-content: center;
 }
 
 .button-user {
