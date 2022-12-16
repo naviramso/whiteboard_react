@@ -5,8 +5,8 @@ import { useContext, useEffect, useState } from "react";
 import { context } from "./app";
 import "./whiteboard.css";
 import io from  "socket.io-client";
-
-const socket = io("http://192.168.0.12:3001");
+import {useParams} from "react-router-dom"
+const socket = io("http://localhost:3001") ;
 //const socket = io("http://192.168.0.12:3050/api/");
 let canvasize;
 let canvasCtx;
@@ -40,17 +40,21 @@ export function Whiteboard() {
   const [puntosCir, setPuntosCir] = useState([0, 0]);
   const [valueScroll, setValueScroll] = useState(0);
 
-  const [message,setMessage]=useState({color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:[0,0,0,0],circulo:false,radio:0,triangulo:false,text:""});
-
+  const [message,setMessage]=useState({color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:[0,0,0,0],circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
+  const [admin,setAdmin]=useState(false)
+  const [usuario,setUsuarios]=useState([])
+  
   useEffect(() => {
     const canvas = document.getElementById("figuras");
     canvasCtx = canvas.getContext("2d");
     canvasCtx.fillStyle = "white";
     canvasCtx.fillRect(0, 0, 1800, 1920);
+    
     socket.on("message",(message)=>{
       console.log(message);
       setMessage(message);
     });
+   // socket.on("usuarios",)
     
   }, []);
 
@@ -68,8 +72,8 @@ export function Whiteboard() {
     if(message.beginLine){
       setColor(message.color);
       canvasCtx.beginPath();
-      canvasCtx.strokeStyle = color;
-      canvasCtx.lineWidth = thicknessValue;
+      canvasCtx.strokeStyle = message.color;
+      canvasCtx.lineWidth = message.grosor;
       canvasCtx.moveTo(message.linePunto[0],message.linePunto[1])
               
     }
@@ -82,7 +86,7 @@ export function Whiteboard() {
     if(message.cuadrado){
 
       canvasCtx.strokeStyle = message.color;
-      canvasCtx.lineWidth = thicknessValue;
+      canvasCtx.lineWidth = message.grosor;
       canvasCtx.strokeRect(
         message.puntosCuadrado[0],
         message.puntosCuadrado[1],
@@ -93,7 +97,7 @@ export function Whiteboard() {
     if(message.circulo){
       canvasCtx.beginPath();
       canvasCtx.strokeStyle = message.color;
-      canvasCtx.lineWidth = thicknessValue;
+      canvasCtx.lineWidth = message.grosor;
 
       canvasCtx.arc(message.puntosCuadrado[0], message.puntosCuadrado[1], message.radio, 0, Math.PI * 2);
       canvasCtx.stroke();
@@ -101,12 +105,18 @@ export function Whiteboard() {
     if(message.triangulo){
       canvasCtx.beginPath();
       canvasCtx.strokeStyle = message.color;
-      canvasCtx.lineWidth=thicknessValue;
+      canvasCtx.lineWidth=message.grosor;
       canvasCtx.moveTo(message.linePunto[0],message.linePunto[1])
       canvasCtx.lineTo(message.puntosCuadrado[0],message.puntosCuadrado[1])
       canvasCtx.lineTo(message.puntosCuadrado[2],message.puntosCuadrado[3])
       canvasCtx.closePath();
       canvasCtx.stroke();
+    }
+    if(message.text!=""){
+      canvasCtx.fillStyle = message.color;
+      canvasCtx.font = message.grosor * 3 + 10 + "px Comic Sans MS";
+      canvasCtx.textAlign = "center";
+      canvasCtx.fillText(message.text,message.linePunto[0],message.linePunto[1]);
     }
     }
   });
@@ -138,7 +148,7 @@ export function Whiteboard() {
     }
   }, [figuras]);
 
-  useEffect(() => {}, [escribir]);
+ const {id} =useParams();
   return (
     <div className="canvas">
       <canvas
@@ -155,7 +165,7 @@ export function Whiteboard() {
             const y=event.clientY - canvasize.top
             canvasCtx.moveTo(x,y)
            
-            socket.emit("message",{color:color,beginLine:true,line:false,linePunto:[x,y],cuadrado:false,puntosCuadrado:[0,0,0],circulo:false,radio:0,triangulo:false,text:""});
+            socket.emit("message",{color:color,beginLine:true,line:false,linePunto:[x,y],cuadrado:false,puntosCuadrado:[0,0,0],circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
           }
         }}
         onMouseMove={(e) => {
@@ -165,13 +175,13 @@ export function Whiteboard() {
             canvasCtx.lineTo(x,y);
             canvasCtx.stroke();
            
-            socket.emit("message",{color:message.color,beginLine:false,line:true,linePunto:[x,y],cuadrado:false,puntosCuadrado:[0,0,0],circulo:false,radio:0,triangulo:false,text:""});
+            socket.emit("message",{color:message.color,beginLine:false,line:true,linePunto:[x,y],cuadrado:false,puntosCuadrado:[0,0,0],circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
           }
         }}
         onMouseUp={() => {
           if (bandera) {
             setbandera(false);
-            socket.emit("message",{color:message.color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:[0,0,0],circulo:false,radio:0,triangulo:false,text:""});
+            socket.emit("message",{color:message.color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:[0,0,0],circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
           }
         }}
       ></canvas>
@@ -279,16 +289,16 @@ export function Whiteboard() {
             canvasCtx.lineWidth = thicknessValue;
             puntosCuad[2]=puntosCuad[2] - puntosCuad[0]
             puntosCuad[3]=puntosCuad[3] - puntosCuad[1]
-            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:true,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:""});
-            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:true,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:""});
-              socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:true,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:""})
+            socket.rom(id).emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:true,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:true,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
+              socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:true,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue})
             canvasCtx.strokeRect(
               puntosCuad[0],
               puntosCuad[1],
               puntosCuad[2],
               puntosCuad[3]
             );
-            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:""});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
             setPuntosCuad([0, 0, 0, 0]);
             setDibujarCuadrado(false);
             setfiguras(false);
@@ -305,9 +315,13 @@ export function Whiteboard() {
               event.clientX - canvasize.left,
               event.clientY - canvasize.top
             );
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[event.clientX - canvasize.left,event.clientY - canvasize.top],cuadrado:false,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:textValue,grosor:thicknessValue});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[event.clientX - canvasize.left,event.clientY - canvasize.top],cuadrado:false,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:textValue,grosor:thicknessValue});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[event.clientX - canvasize.left,event.clientY - canvasize.top],cuadrado:false,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:textValue,grosor:thicknessValue});
             setEscribir(false);
             setfiguras(false);
             setTextValue("");
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
           }
           if (circulo) {
             canvasCtx.beginPath();
@@ -316,15 +330,19 @@ export function Whiteboard() {
             const x = Math.abs(event.clientX - canvasize.left - puntosCir[0]);
             canvasCtx.arc(puntosCir[0], puntosCir[1], x, 0, Math.PI * 2);
             canvasCtx.stroke();
-            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:[puntosCir[0], puntosCir[1],0,0],circulo:true,radio:x,triangulo:false,text:""});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:[puntosCir[0], puntosCir[1],0,0],circulo:true,radio:x,triangulo:false,text:"",grosor:thicknessValue});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:[puntosCir[0], puntosCir[1],0,0],circulo:true,radio:x,triangulo:false,text:"",grosor:thicknessValue});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:[puntosCir[0], puntosCir[1],0,0],circulo:true,radio:x,triangulo:false,text:"",grosor:thicknessValue});
             setPuntosCir([0, 0]);
             setDibujarCirculo(false);
             setfiguras(false);
             setCirculo(false);
-            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:""});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:puntosCuad,circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
           }
           if (triangulo) {
             canvasCtx.beginPath();
+            canvasCtx.strokeStyle = color;
+            canvasCtx.lineWidth = thicknessValue;
             canvasCtx.moveTo(puntosCir[0], puntosCir[1]);
             canvasCtx.lineTo(
               event.clientX - canvasize.left,
@@ -334,15 +352,18 @@ export function Whiteboard() {
             canvasCtx.lineTo(puntosCir[0] - x, event.clientY - canvasize.top);
             canvasCtx.closePath();
             canvasCtx.stroke();
-            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[puntosCir[0],puntosCir[1]],cuadrado:false,puntosCuadrado:[event.clientX - canvasize.left,event.clientY - canvasize.top,puntosCir[0] - x,event.clientY - canvasize.top],circulo:false,radio:0,triangulo:true,text:""});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[puntosCir[0],puntosCir[1]],cuadrado:false,puntosCuadrado:[event.clientX - canvasize.left,event.clientY - canvasize.top,puntosCir[0] - x,event.clientY - canvasize.top],circulo:false,radio:0,triangulo:true,text:"",grosor:thicknessValue});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[puntosCir[0],puntosCir[1]],cuadrado:false,puntosCuadrado:[event.clientX - canvasize.left,event.clientY - canvasize.top,puntosCir[0] - x,event.clientY - canvasize.top],circulo:false,radio:0,triangulo:true,text:"",grosor:thicknessValue});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[puntosCir[0],puntosCir[1]],cuadrado:false,puntosCuadrado:[event.clientX - canvasize.left,event.clientY - canvasize.top,puntosCir[0] - x,event.clientY - canvasize.top],circulo:false,radio:0,triangulo:true,text:"",grosor:thicknessValue});
             setPuntosCir([0, 0]);
             setTriangulo(false);
             setfiguras(false);
             setDibujarTriangulo(false);
-            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:[0,0,0,0],circulo:false,radio:0,triangulo:false,text:""});
+            socket.emit("message",{color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:[0,0,0,0],circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
           }
         }}
       ></canvas>
+      <h1>{id}</h1>
     </div>
   );
 }
