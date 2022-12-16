@@ -9,7 +9,7 @@ export function Image() {
     state: false,
   });
 
-  let [idImage, setId] = useState(0);
+  
 
   useEffect(() => {
     const getImages = async () => {
