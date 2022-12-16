@@ -4,10 +4,12 @@ import { borderRadius } from "@mui/system";
 import { useContext, useEffect, useState } from "react";
 import { context } from "./app";
 import "./whiteboard.css";
+
 import io from  "socket.io-client";
 import {useParams} from "react-router-dom"
 const socket = io("http://localhost:3001") ;
-//const socket = io("http://192.168.0.12:3050/api/");
+
+
 let canvasize;
 let canvasCtx;
 
@@ -43,19 +45,19 @@ export function Whiteboard() {
   const [message,setMessage]=useState({color:color,beginLine:false,line:false,linePunto:[0,0],cuadrado:false,puntosCuadrado:[0,0,0,0],circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
   const [admin,setAdmin]=useState(false)
   const [usuario,setUsuarios]=useState([])
-  
+
   useEffect(() => {
     const canvas = document.getElementById("figuras");
     canvasCtx = canvas.getContext("2d");
     canvasCtx.fillStyle = "white";
     canvasCtx.fillRect(0, 0, 1800, 1920);
-    
+
     socket.on("message",(message)=>{
       console.log(message);
       setMessage(message);
     });
    // socket.on("usuarios",)
-    
+
   }, []);
 
   useEffect(() => {
@@ -69,7 +71,7 @@ export function Whiteboard() {
       canvasize = canvas.getBoundingClientRect();
     }
 
-    if(message.beginLine){
+    if (message.beginLine) {
       setColor(message.color);
       canvasCtx.beginPath();
       canvasCtx.strokeStyle = message.color;
@@ -80,11 +82,11 @@ export function Whiteboard() {
     else{
       if(message.line){
         canvasCtx.lineTo(message.linePunto[0],message.linePunto[1]);
+
         canvasCtx.stroke();
       }
-    
-    if(message.cuadrado){
 
+      if(message.cuadrado){
       canvasCtx.strokeStyle = message.color;
       canvasCtx.lineWidth = message.grosor;
       canvasCtx.strokeRect(
@@ -137,8 +139,6 @@ export function Whiteboard() {
     behavior: "smooth",
   });*/
 
- 
-
   useEffect(() => {
     var fig = document.getElementById("figuras");
     if (figuras) {
@@ -170,9 +170,9 @@ export function Whiteboard() {
         }}
         onMouseMove={(e) => {
           if (bandera) {
-            const x=e.clientX - canvasize.left
-            const y=e.clientY - canvasize.top
-            canvasCtx.lineTo(x,y);
+            const x = e.clientX - canvasize.left;
+            const y = e.clientY - canvasize.top;
+            canvasCtx.lineTo(x, y);
             canvasCtx.stroke();
            
             socket.emit("message",{color:message.color,beginLine:false,line:true,linePunto:[x,y],cuadrado:false,puntosCuadrado:[0,0,0],circulo:false,radio:0,triangulo:false,text:"",grosor:thicknessValue});
@@ -302,8 +302,7 @@ export function Whiteboard() {
             setPuntosCuad([0, 0, 0, 0]);
             setDibujarCuadrado(false);
             setfiguras(false);
-            setCuadrado(false)
-            
+            setCuadrado(false);
           }
 
           if (escribir) {
