@@ -9,8 +9,6 @@ export function Image() {
     state: false,
   });
 
-  
-
   useEffect(() => {
     const getImages = async () => {
       const result = await axios.get("/api/get");
@@ -24,7 +22,7 @@ export function Image() {
     console.log(ima);
     return (
       <>
-        <div style={{backgroundImage = `url($ima.route)`}} key={ima.id}></img>
+        <img src={ima.route} key={ima.id}/>
         <button>
           <FontAwesomeIcon icon="trash" />
         </button>

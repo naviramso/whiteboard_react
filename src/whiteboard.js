@@ -7,7 +7,8 @@ import "./whiteboard.css";
 
 import io from  "socket.io-client";
 import {useParams} from "react-router-dom"
-const socket = io("http://localhost:3001") ;
+
+const socket = io("http://localhost:3001");
 
 
 let canvasize;
