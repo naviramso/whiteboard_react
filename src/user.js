@@ -18,7 +18,7 @@ export function User() {
       setUsu( users.map((res) => {
         console.log(res.usuario);
         return (
-          <div className="ficha">
+          <div className="ficha" key={1}>
             <span>
               <FontAwesomeIcon icon="user" />
             </span>
