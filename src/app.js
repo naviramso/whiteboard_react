@@ -17,7 +17,7 @@ export function App() {
   const [triangulo, setTriangulo] = useState(false);
   const [circulo, setCirculo] = useState(false);
   const [textValue, setTextValue] = useState("");
-
+  const [admin ,setAdmin] =useState(false);
 
   return (
     <context.Provider
@@ -37,14 +37,15 @@ export function App() {
         triangulo,
         setTriangulo,
         circulo,
-        setCirculo
+        setCirculo,
+        setAdmin
       ]}
     >
       <div className="container">
         
         <Whiteboard></Whiteboard>
-        <Menu></Menu>
-        
+        {admin?<Menu  ></Menu>:<></>}
+              
       </div>
  
     </context.Provider>
