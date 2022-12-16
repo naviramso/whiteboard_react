@@ -12,6 +12,8 @@ const menuContext = createContext();
 export function Menu() {
   const [pencil, setPencil, color, setColor, , , , setfiguras] =
     useContext(context);
+  let updateImage = useContext(context)[21];
+  let setUpdate = useContext(context)[22];
   const [menuPen, setMenuPen] = useState(false);
   const [menuEraser, setMenuEraser] = useState(false);
   const [menuColor, setMenuColor] = useState(false);
@@ -151,6 +153,7 @@ export function Menu() {
           onclick={() => {
             selectMenu(8);
             upload();
+            setUpdate(!updateImage);
           }}
         />
         {/* Boton LimpiarLienzo*/}

@@ -32,8 +32,11 @@ export function Whiteboard() {
     circulo,
     setCirculo,
     setAdmin,
+    ,
+    setUsuarios,
+    imageRoute,
+    ,
   ] = useContext(context);
-  console.log(useContext(context));
   const [bandera, setbandera] = useState(false);
   const [dibujarcuadrado, setDibujarCuadrado] = useState(false);
   const [escribir, setEscribir] = useState(false);
@@ -42,6 +45,7 @@ export function Whiteboard() {
   const [puntosCuad, setPuntosCuad] = useState([0, 0, 0, 0]);
   const [puntosCir, setPuntosCir] = useState([0, 0]);
   const [valueScroll, setValueScroll] = useState(0);
+  const [urlId, setUrlID] = useState(useParams());
 
   const [message, setMessage] = useState({
     color: color,
@@ -57,12 +61,11 @@ export function Whiteboard() {
     grosor: thicknessValue,
     id: "",
   });
-  const [usuarios, setUsuarios] = useState([]);
 
   const { id } = useParams();
 
   useEffect(() => {
-    const canvas = document.getElementById("figuras");
+    const canvas = document.getElementById("micanvas");
     canvasCtx = canvas.getContext("2d");
     canvasCtx.fillStyle = "white";
     canvasCtx.fillRect(0, 0, 1800, 1920);
@@ -81,6 +84,19 @@ export function Whiteboard() {
   }, []);
 
   useEffect(() => {
+    const canvas = document.getElementById("micanvas");
+    canvasCtx = canvas.getContext("2d");
+    canvasCtx.fillStyle = "white";
+    let img = new Image();
+    img.src = imageRoute;
+    console.log(imageRoute);
+    canvasCtx.drawImage(img, 0, 0);
+  }, [urlId]);
+
+  useEffect(() => {
+    if (urlId != id) {
+      setUrlID(id);
+    }
     if (!figuras) {
       const canvas = document.getElementById("micanvas");
       canvasCtx = canvas.getContext("2d");
@@ -355,21 +371,20 @@ export function Whiteboard() {
             canvasCtx.lineWidth = thicknessValue;
             puntosCuad[2] = puntosCuad[2] - puntosCuad[0];
             puntosCuad[3] = puntosCuad[3] - puntosCuad[1];
-            socket
-              .emit("message", {
-                color: color,
-                beginLine: false,
-                line: false,
-                linePunto: [0, 0],
-                cuadrado: true,
-                puntosCuadrado: puntosCuad,
-                circulo: false,
-                radio: 0,
-                triangulo: false,
-                text: "",
-                grosor: thicknessValue,
-                id: "" + id,
-              });
+            socket.emit("message", {
+              color: color,
+              beginLine: false,
+              line: false,
+              linePunto: [0, 0],
+              cuadrado: true,
+              puntosCuadrado: puntosCuad,
+              circulo: false,
+              radio: 0,
+              triangulo: false,
+              text: "",
+              grosor: thicknessValue,
+              id: "" + id,
+            });
             socket.emit("message", {
               color: color,
               beginLine: false,

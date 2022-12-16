@@ -15,13 +15,18 @@ import {
   faSquare,
   faTriangleExclamation,
   faCircle,
-  faChevronUp
+  faChevronUp,
+  faChevronLeft,
+  faChevronRight,
+  faChevronDown,
+  faUsers,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {BrowserRouter, Route,Routes} from "react-router-dom"
 const rou="/"+2;
 
-library.add(faFill, faChevronUp,faCircle,faTriangleExclamation, faSquare,faSave, faEraser, faTrash, faPen, faImage, faMinus, faShapes, faT);
+library.add(faUser, faUsers, faFill,faChevronDown, faChevronUp,faCircle,faTriangleExclamation, faSquare,faSave, faEraser, faTrash, faPen, faImage, faMinus, faShapes, faT, faChevronLeft, faChevronRight);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

@@ -2,8 +2,8 @@ import { Whiteboard } from "./whiteboard";
 import { Menu, menuContext } from "./menu";
 import "./styles.css";
 import { createContext, useState } from "react";
-import {Image} from "./image.js"
-import { Outlet, Link } from "react-router-dom";
+import {Image} from "./image"
+import {User} from "./user"
 
 export const context = createContext();
 export function App() {
@@ -19,6 +19,9 @@ export function App() {
   const [circulo, setCirculo] = useState(false);
   const [textValue, setTextValue] = useState("");
   const [admin ,setAdmin] =useState(false);
+  const [usuarios, setUsuarios] = useState();
+  const [imageRoute, setRoute] = useState("");
+  const [updateIma, setUpdateIma] = useState(false);
 
   return (
     <context.Provider
@@ -39,14 +42,21 @@ export function App() {
         setTriangulo,
         circulo,
         setCirculo,
-        setAdmin
+        setAdmin,
+        usuarios,
+        setUsuarios,
+        imageRoute,
+        setRoute,
+        updateIma,
+        setUpdateIma,
       ]}
     >
       <div className="container">
         
         <Whiteboard></Whiteboard>
         {admin?<Menu  ></Menu>:<></>}
-              
+        <Image></Image>   
+        <User></User>
       </div>
  
     </context.Provider>
